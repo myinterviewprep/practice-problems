@@ -106,16 +106,18 @@ function mergeRanges(meetings) {
     // // console.log  ("--------------");
     // // console.log  ("mergeRanges:", meetings);
 
-    // Merge meetings ranges
-    var answer = [];
-
-    // console.log("meetings before sort:", meetings);
-
     meetings.sort((a, b) => {
 
-        console.log("a:", a,  "b:", b);
-        let answer = a['startTime'] - b['startTime'];
-        console.log("a.startTime:", a.startTIme, "b.startTime:", b.startTime, " = ", answer);
+        // console.log("a:", JSON.stringify(a),  "b:", JSON.stringify(b));
+        // console.log("a:", a.startTime,  "b:", b.startTime);
+
+        var ast = a.startTime;
+        var bst = b.startTime;
+
+        // console.log("ast:", ast,  "bst:", bst);
+
+        let answer = ast-bst;
+        // console.log("ast:", ast, "bst", bst, " = ", answer);
         return answer;
     })
 
@@ -135,8 +137,6 @@ function mergeRanges(meetings) {
     }
 
     return meetings.filter((m) => !!m)
-
-
 }
 
 
@@ -150,7 +150,6 @@ function isMergeable(m1, m2) {
         return false;
     }
 }
-
 
 function merge(m1, m2) {
     let endTime;
