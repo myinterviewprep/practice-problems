@@ -6,12 +6,153 @@ class WordCloudData {
 
     populateWordsToCounts(inputString) {
 
-        // Count the frequency of each word
+        let startIndex = 0;
+        let endIndex;
+        for (let i = 0; i < inputString.length; i++) {
+
+            let current = inputString[i]
+
+            if (isLetterRegex(current)) {
+
+            } else if (current == ' ') {
+                endIndex = i;
+
+
+                let lengthOfCurrent = endIndex - startIndex;
+                if (lengthOfCurrent) {
+
+                    // check the ending character
+                    let word;
+                    let endingChar = inputString[endIndex - 1]
+                    if (!isLetterRegex(endingChar)) {
+                        word = inputString.slice(startIndex, endIndex - 1);
+                    } else {
+                        word = inputString.slice(startIndex, endIndex);
+                    }
+
+                    if (word.length) {
+                        let count = this.wordsToCounts.get(word)
+                        if (count) {
+                            this.wordsToCounts.set(word, ++count)
+                        } else {
+                            this.wordsToCounts.set(word, 1)
+                        }
+                    }
+
+
+                }
+
+                startIndex = i + 1;
+            }
+        }
+
+        endIndex = inputString.length;
+        let lengthOfCurrent = endIndex - startIndex;
+        if (lengthOfCurrent) {
+            // check the ending character
+            let word;
+            let endingChar = inputString[endIndex - 1]
+            if (!isLetterRegex(endingChar)) {
+                word = inputString.slice(startIndex, endIndex - 1);
+            } else {
+                word = inputString.slice(startIndex, endIndex);
+            }
+
+            if (word.length) {
+                let count = this.wordsToCounts.get(word)
+                if (count) {
+                    this.wordsToCounts.set(word, ++count)
+                } else {
+                    this.wordsToCounts.set(word, 1)
+                }
+            }
+
+
+        }
+        console.log("answer:", this.wordsToCounts)
+
+
+        return this.wordsToCounts;
+
 
 
     }
-
 }
+
+function isLetterRegex(character) {
+    let expr = RegExp(/[A-Za-z]/);
+    return expr.test(character);
+}
+
+// function isLetter(character){
+//     // new way with es7
+//     return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.includes(character)
+//     // old fancy way with ~ and index of
+//     return !!~'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(character)
+// }
+//
+// function splitWords(inputString, countMap=new Map()){
+//
+//     let startIndex=0;
+//     let endIndex;
+//     for (let i=0;i<inputString.length;i++){
+//
+//         let current = inputString[i]
+//
+//         if (isLetterRegex(current)) {
+//
+//         }
+//         else if (current == ' ') {
+//             endIndex = i;
+//
+//
+//             let lengthOfCurrent = endIndex-startIndex;
+//             if (lengthOfCurrent) {
+//
+//                 // check the ending character
+//                 let word;
+//                 let endingChar = inputString[endIndex - 1]
+//                 if (!isLetterRegex(endingChar)) {
+//                     word = inputString.slice(startIndex, endIndex-1);
+//                 }
+//                 else{
+//                     word = inputString.slice(startIndex, endIndex);
+//                 }
+//
+//                 let count = countMap.get(word)
+//
+//                 if (count) {
+//                     countMap.set(word,  count++)
+//                 }else {
+//                     countMap.set(word, 1)
+//                 }
+//             }
+//
+//             startIndex = i + 1;
+//         }
+//     }
+//
+//     endIndex = inputString.length;
+//     let lengthOfCurrent = endIndex - startIndex;
+//     if (lengthOfCurrent) {
+//         // check the ending character
+//         let word;
+//         let endingChar = inputString[endIndex - 1]
+//         if (!isLetterRegex(endingChar)) {
+//             word = inputString.slice(startIndex, endIndex - 1);
+//         } else {
+//             word = inputString.slice(startIndex, endIndex);
+//         }
+//         let count = countMap.get(word)
+//         if (count) {
+//             countMap.set(word, ++count)
+//         } else {
+//             countMap.set(word, 1)
+//         }
+//     }
+//
+//     return countMap;
+// }
 
 
 // Tests
@@ -74,3 +215,10 @@ function assert(condition, desc) {
         console.log(`${desc} ... FAIL`);
     }
 }
+
+// [0, 'a','A', '-','.', ' ', ''].forEach(function(value){
+//     console.log(`value: ${value} is letter: ${isLetterRegex(value)}`)
+//     console.log(`value: ${value} is letter: ${isLetter(value)}`)
+// })
+//
+// console.log(splitWords("My name is Christopher Chen. I'm a person."))
