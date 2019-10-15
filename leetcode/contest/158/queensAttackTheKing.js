@@ -21,11 +21,11 @@ var queensAttacktheKing = function (queens, king) {
             insertReplaceOrBlock(answer, queen, king)
 
 
-            answer.push(queen)
+            // answer.push(queen)
         }
     }
 
-    return filterOutBlocking(answer, king);
+    return answer;
 };
 
 function insertReplaceOrBlock(queens, king, queen) {
@@ -77,6 +77,7 @@ function insertReplaceOrBlock(queens, king, queen) {
                 else{
                     // just insert no blocking
                     queens.push(queen)
+                    break;
                 }
 
             }
@@ -87,61 +88,41 @@ function insertReplaceOrBlock(queens, king, queen) {
                 // both x > king
                 if (queenX > kingX && currentX > kingX) {
 
-
-
-
-
-                }
-                // both y
-                else if (queenY < kingY && currentY < kingY ) {
-
+                    if (queenX < currentX) {
+                        queens[i] = queen
+                    }
+                    break;
 
                 }
-
+                // both x < king
+                else if (queenX < kingY && currentX < kingY ) {
+                    if (queenX > currentX) {
+                        queens[i] = queen
+                    }
+                }
+                else{
+                    queens.push(queen)
+                    break;
+                }
 
             }
 
+            // diagonal
+            // if () {
+            //
+            // }
+            queens.push(queen)
+
+
+
         }
+
+        return queens;
 
     }
 
-
 }
 
-
-}
-
-
-function filterOutBlocking(queens, king) {
-    let answer = []
-
-    for (let i = 0; i < answer.length; i++) {
-        let queen = queens[i]
-
-
-        // give me the closest one to
-
-
-        // if they have same x there can only be two
-        if (queen[0] == king[0]) {
-
-            for (let j = i; j < answer.length; j++) {
-
-            }
-
-        }
-        // they have same y there can only be two
-        else if (queen[1] == king[1]) {
-
-            // check to see if there is anything sharing y with x between queen[0] and king[0]
-
-        }
-        // diagonal there can be four of them
-
-
-    }
-    return answer;
-}
 
 function canAttack(queen, king) {
     return inSameRowOrColumn(queen, king) || isDiagonal(queen, king);
