@@ -18,50 +18,91 @@
 // Output: 3
 // Explanation: Replace the 'b' or 'd' with 'c' to have the longest repeating substring "ccc".
 
-const lengthOfLongestSubstring = function (str, k) {
+function lengthOfLongestSubstring(str, k) {
 
-    let leftIndex=0
+    let leftIndex = 0
     let maxLength = 0
-    let maxRepeatCharCount = 0
-    let characterCount = new Map()
+    let countOfMaxLetter = 0
+    let counts = {}
     for (let rightIndex = 0; rightIndex < str.length; rightIndex++) {
 
-        let currentCharacter = str[rightIndex]
-
-        let count = characterCount.get(currentCharacter) || 0
-        if (!count) {
-            characterCount.set(currentCharacter, 1);
-        } else {
-            characterCount.set(currentCharacter, ++count)
+        const letter = str[rightIndex]
+        if (!(letter in counts)) {
+            counts[letter] = 0
         }
+        counts[letter]++
 
-        maxRepeatCharCount = Math.max(count,  maxRepeatCharCount)
+        console.log("counts:", counts)
 
-        console.log("maxRepeatCharCount:", maxRepeatCharCount);
-
+        countOfMaxLetter = Math.max(countOfMaxLetter, counts[letter])
         let currentLength = rightIndex - leftIndex + 1
-        while (currentLength-maxRepeatCharCount>k) {
-            let beginningCharacter = str[leftIndex]
-            let beginningCharacterCount = characterCount.get(beginningCharacter)
-            if (beginningCharacterCount == 1) {
-                characterCount.delete(beginningCharacter)
-            } else {
-                characterCount.set(beginningCharacter, --beginningCharacterCount)
-            }
+        console.log("countOfMaxLetter:", countOfMaxLetter);
+        console.log("currentLength:", currentLength);
+        console.log("k:", k)
+
+
+        while((rightIndex-leftIndex+1)-countOfMaxLetter > k){
+            console.log("boo --")
+            let leftLetter = str[leftIndex]
+            counts[leftLetter]--
             leftIndex++
         }
 
-
-        maxLength = Math.max(rightIndex - leftIndex + 1, maxLength)
-
-        console.log("currentLength:", currentLength);
-        console.log("maxLength:", maxLength);
-        console.log("characterCount:", characterCount);
+        currentLength = rightIndex - leftIndex + 1
+        maxLength = Math.max(maxLength,  currentLength)
     }
 
-    console.log("maxLength:", maxLength);
-    return maxLength;
-};
+    console.log("maxLength:", maxLength)
+    return maxLength
+
+}
+
+
+// const lengthOfLongestSubstring = function (str, k) {
+//
+//     let leftIndex=0
+//     let maxLength = 0
+//     let maxRepeatCharCount = 0
+//     let characterCount = new Map()
+//     for (let rightIndex = 0; rightIndex < str.length; rightIndex++) {
+//
+//         let currentCharacter = str[rightIndex]
+//
+//         let count = characterCount.get(currentCharacter) || 0
+//         if (!count) {
+//             characterCount.set(currentCharacter, 1);
+//         } else {
+//             characterCount.set(currentCharacter, ++count)
+//         }
+//
+//         maxRepeatCharCount = Math.max(count,  maxRepeatCharCount)
+//
+//         console.log("maxRepeatCharCount:", maxRepeatCharCount);
+//
+//         let currentLength = rightIndex - leftIndex + 1
+//         while (currentLength-maxRepeatCharCount>k) {
+//             let beginningCharacter = str[leftIndex]
+//             let beginningCharacterCount = characterCount.get(beginningCharacter)
+//             if (beginningCharacterCount == 1) {
+//                 characterCount.delete(beginningCharacter)
+//             } else {
+//                 characterCount.set(beginningCharacter, --beginningCharacterCount)
+//             }
+//             leftIndex++
+//         }
+//
+//
+//         maxLength = Math.max(rightIndex - leftIndex + 1, maxLength)
+//
+//         console.log("currentLength:", currentLength);
+//         console.log("maxLength:", maxLength);
+//         console.log("characterCount:", characterCount);
+//     }
+//
+//     console.log("maxLength:", maxLength);
+//     return maxLength;
+// };
+
 
 console.assert(lengthOfLongestSubstring("aabccbb", 2) == 5, "1st wrong")
 console.assert(lengthOfLongestSubstring("abbcb", 1) == 4, "2nd wrong")
