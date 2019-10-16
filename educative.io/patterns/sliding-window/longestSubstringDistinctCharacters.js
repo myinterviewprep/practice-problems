@@ -40,13 +40,6 @@ const longestSubstringWithKDistinct = function (str, k) {
             while(distinctCharacters.size > k){
                 distinctCharacters.delete(str[leftIndex])
                 leftIndex++
-
-                // let currentLength = rightIndex - leftIndex + 1
-                // if (distinctCharacters.size <= k) {
-                //     if (currentLength > longestLength) {
-                //         longestLength = currentLength
-                //     }
-                // }
             }
 
         }
