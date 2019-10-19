@@ -35,47 +35,44 @@ const _ = require('lodash');
 
 const findPermutation = function (str, pattern) {
 
-    let patternCount = {}
-    for(let i=0;i<pattern.length;i++){
-        if (!patternCount[pattern[i]]) {
-            patternCount[pattern[i]] = 0
+    let patternCounts = {};
+    for (let i=0;i<pattern.length;i++){
+        let letter = pattern[i];
+        if (!patternCounts[letter]) {
+            patternCounts[letter]=0
         }
-        patternCount[pattern[i]]++
+        patternCounts[letter]++
     }
 
-    let leftIndex=0, answer=false, counts={};
+
+    let numLetters = Object.keys(patternCounts).length;
+    let leftIndex = 0, numLettersCleared=0;
 
     for (let rightIndex=0;rightIndex<str.length;rightIndex++){
-        let rightLetter=str[rightIndex]
-        if (!(rightLetter in patternCount)) {
-            patternCount[rightLetter]--
+        let rightLetter = str[rightIndex]
+
+        if (rightLetter in patternCounts) {
+            if (--patternCounts[rightLetter]==0) {
+                numLettersCleared++
+            }
         }
 
-        if (rightIndex >= pattern.length) {
+        if (numLettersCleared == numLetters) {
+            return true
+        }
 
+        if (rightIndex >= pattern.length-1) {
             let leftLetter = str[leftIndex]
-            counts[leftLetter]--
-            if (counts[leftLetter]==0) {
-                delete counts[leftLetter]
+            if (leftLetter in patternCounts) {
+                if (patternCounts[leftLetter]==0) {
+                    numLettersCleared--
+                    patternCounts[leftLetter]++
+                }
             }
             leftIndex++
         }
-
-        let isEqual=true;
-        Object.keys(counts).forEach(function(key){
-            if (patternCount[key]!=counts[key]) {
-                isEqual=false;
-                return false;
-            }
-        })
-
-        if (isEqual) {
-            return true;
-        }
-
     }
-
-    return answer;
+    return false;
 };
 
 console.assert(findPermutation("oidbcaf","abc")==true, "1 wrong")
