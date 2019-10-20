@@ -28,7 +28,7 @@ const searchTriplets = function (arr) {
         }
 
         // console.log("currentNumber:", currentNumber);
-        findPair(arr, -currentNumber, cursorIndex+1, triplets);
+        findPair(arr, -currentNumber, cursorIndex + 1, triplets);
         cursorIndex++
     }
     // console.log("triplets:", triplets);
@@ -54,18 +54,23 @@ function findPair(arr, target, leftIndex, triplets) {
 
         if (sum == target) {
             // console.log("FOUND:", sum, target);
-            triplets.push([-target,  leftNum,  rightNum])
+            triplets.push([-target, leftNum, rightNum])
             leftIndex++
+            while (leftIndex < rightIndex && leftNum == arr[leftIndex]) {
+                leftIndex++
+            }
             rightIndex--
-        }
-        else if (sum < target) {
+            while (leftIndex < rightIndex && rightNum != arr[rightIndex]) {
+                rightIndex--
+            }
+        } else if (sum < target) {
             leftIndex++
-        }else{
+        } else {
             rightIndex--
         }
 
     }
 }
 
-console.assert(_.isEqual(searchTriplets([-3, 0, 1, 2, -1, 1, -2]),[[-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]]) , "1 wrong")
+console.assert(_.isEqual(searchTriplets([-3, 0, 1, 2, -1, 1, -2]), [[-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]]), "1 wrong")
 console.assert(_.isEqual(searchTriplets([-5, 2, -1, -2, 3]), [[-5, 2, 3], [-2, -1, 3]]), "2 wrong")
