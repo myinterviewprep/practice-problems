@@ -7,40 +7,52 @@ class Node {
 
 
 const is_palindromic_linked_list = function (head) {
+    console.log("head:", JSON.stringify(head));
+    let is = true;
 
-    if (!head || !head.next) {
-        return true;
-    }
 
-    // first we find the middle of the list
-    let slow = head, fast = head;
+    // find middle first
+    let fast = head, slow = head;
     while (fast && fast.next) {
         fast = fast.next.next;
         slow = slow.next;
     }
 
-    // now we have slow at half and we want to reverse the rest of it
-    let headSecondHalf = reverse(slow);
-    let saveHeadOfHalf = headSecondHalf;
+    let middle = slow;
 
-    while (head && headSecondHalf) {
-        if (head.value != headSecondHalf.value) {
-            return false;
+
+    let headReversed = reverse(middle);
+
+    console.log("head:", JSON.stringify(head));
+    console.log("headReversed:", JSON.stringify(headReversed));
+
+    let saveHeadReversed = headReversed;
+
+
+    while (headReversed && head) {
+
+    console.log("headReversed.val:", headReversed.value);
+    console.log("head.val", head.value);
+
+        if (headReversed.value !== head.value) {
+            is = false;
+            break;
         }
-        head =head.next;
-        headSecondHalf = headSecondHalf.next;
 
+        headReversed = headReversed.next
+        head = head.next
     }
 
-    reverse(saveHeadOfHalf);
+    // reverse back
+    reverse(saveHeadReversed);
 
 
-    return false;
+    return is;
 };
 
 
 function reverse(head) {
-    let prev;
+    let prev = null;
     while (head) {
         let next = head.next;
         head.next = prev;
@@ -50,8 +62,7 @@ function reverse(head) {
     return prev;
 }
 
-
-head = new Node(2)
+let head = new Node(2)
 head.next = new Node(4)
 head.next.next = new Node(6)
 head.next.next.next = new Node(4)
