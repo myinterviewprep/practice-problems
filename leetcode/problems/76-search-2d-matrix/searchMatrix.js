@@ -46,7 +46,7 @@ var searchMatrix = function (matrix, target) {
 };
 
 function binarySearch(a, target) {
-    console.log("binary search:", a,  target);
+    console.log("binary search:", a, target);
 
     var startIndex = Math.round(a.length / 2);
     console.log("startIndex:", startIndex);
