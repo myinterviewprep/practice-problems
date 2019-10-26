@@ -17,40 +17,35 @@
 // Output: [[1,4], [5,7]]
 // Explanation: After insertion, since [1,4] overlaps with [2,3], we merged them into one [1,4].
 
-class Interval {
-    constructor(start, end) {
-        this.start = start;
-        this.end = end;
-    }
-    get_interval() {
-        return "[" + this.start + ", " + this.end + "]";
-    }
-}
-
-const insert = function(intervals, new_interval) {
+const insert = function (intervals, new_interval) {
     let answer = [];
 
-    let i = 0;
-    do{
-        let interval = intervals[i]
-        answer.push(interval);
-        intervals[i] = null;
-        i++;
-    }while(interval.end < new_interval.start)
-
-
-    do{
-        let interval = intervals[i]
-        let merged = new Interval(new_interval.start, Math.max(interval.end, new_interval.end))
-        intervals[i] = null;
+    let interval = intervals[0], i = 0
+    // if the interval ends before the new interval begins we continue
+    while (intervals[i][1] < new_interval[0]) {
+        answer.push(intervals[i])
         i++
-
     }
-    while(merged.end > intervals[i].start)
 
-    answer.push(merged);
+    if (i >= intervals.length) {
+        return answer;
+    }
 
-    while(i<intervals.length){
+
+
+    do {
+        // console.log("merge:", interval, new_interval)
+        let start = Math.min(intervals[i][0], new_interval[0])
+        let end = Math.max(intervals[i][1], new_interval[1])
+        new_interval = [start, end]
+        // console.log("merged:", new_interval);
+        i++
+    } while (i < intervals.length && new_interval[1] >= intervals[i][0])
+
+
+    answer.push(new_interval);
+
+    while (i < intervals.length) {
         answer.push(intervals[i])
         i++
     }
@@ -60,18 +55,18 @@ const insert = function(intervals, new_interval) {
 
 intervals = insert([[1, 3], [5, 7], [8, 12]], [4, 6]);
 result = "";
-for(i=0; i < intervals.length; i++)
+for (i = 0; i < intervals.length; i++)
     result += "[" + intervals[i][0] + ", " + intervals[i][1] + "] ";
 console.log("Intervals after inserting the new interval: " + result);
 
 intervals = insert([[1, 3], [5, 7], [8, 12]], [4, 10]);
 result = "";
-for(i=0; i < intervals.length; i++)
+for (i = 0; i < intervals.length; i++)
     result += "[" + intervals[i][0] + ", " + intervals[i][1] + "] ";
 console.log("Intervals after inserting the new interval: " + result);
 
 intervals = insert([[2, 3], [5, 7]], [1, 4]);
 result = "";
-for(i=0; i < intervals.length; i++)
+for (i = 0; i < intervals.length; i++)
     result += "[" + intervals[i][0] + ", " + intervals[i][1] + "] ";
 console.log("Intervals after inserting the new interval: " + result);
