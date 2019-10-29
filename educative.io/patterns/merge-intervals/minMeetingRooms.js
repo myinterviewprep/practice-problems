@@ -29,7 +29,7 @@
 //
 
 
-// const Heap = require('./collections/heap'); //http://www.collectionsjs.com
+
 
 class Meeting {
     constructor(start, end) {
@@ -38,47 +38,35 @@ class Meeting {
     }
 }
 
+// const Heap = require('./collections/heap'); //http://www.collectionsjs.com
+const Heap = require("collections/heap");
 
 function min_meeting_rooms(meetings) {
+    let numMeetingRooms = 0, runningMeetings = [];
+    meetings.sort((a, b) => a.start - b.start)
+    // console.log("======================")
+    // console.log("meetings:", meetings);
 
+    var heap = new Heap([], null, (a, b) => b.end - a.end)
 
-}
-
-function Heap(values) {
-    this.content = [...values];
-    this.length = this.content.length;
-    this.compare = (a, b) => a.end - b.end;
-
-}
-
-Heap.prototype.insert = function (item) {
-    this.content.push(item)
-    this.float(this.content.length-1)
-    this.length++;
-}
-
-
-Heap.prototype.float = function (index) {
-    let value = this.content[index]
-    while (index > 0) {
-
-        let parentIndex = Math.floor((index - 1) / 2);
-        let parent = this.content[parentIndex]
-
-        // parent is less we swap
-        if (this.compare(parent, value) < 0) {
-            this.content[index] = parent;
-            this.content[parentIndex] = value;
-        }
-        else {
+    for (let i = 0; i < meetings.length; i++) {
+        let meeting = meetings[i]
+        // console.log("meeting:", meeting);
+        while (true) {
+            let endingMeeting = heap.peek();
+            // console.log("ending meeting:", endingMeeting);
+            if (endingMeeting && endingMeeting.end <= meeting.start) {
+                heap.pop();
+                continue;
+            }
             break;
         }
 
-        index = parentIndex;
-
+        heap.push(meeting);
+        numMeetingRooms = Math.max(numMeetingRooms, heap.length);
+        // console.log("numMeetingRooms:", numMeetingRooms);
     }
-
-
+    return numMeetingRooms;
 }
 
 
