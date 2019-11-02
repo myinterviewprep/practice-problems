@@ -10,5 +10,5 @@ Fast and Slow Pointers
 - problem 2
 
 Merge Intervals
-- Problem Challenge 2 - maxCpu
+- Problem Challenge 3 
  

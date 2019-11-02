@@ -26,9 +26,32 @@ class Job {
     }
 };
 
-const find_max_cpu_load = function(jobs) {
-    // TODO: Write your code here
-    return -1;
+const Heap = require("collections/heap");
+// const Heap = require('./collections/heap'); //http://www.collectionsjs.com
+
+const find_max_cpu_load = function (jobs) {
+    let maxCpuLoad = 0;
+
+    jobs.sort((a, b) => a.start - b.start);
+
+    let heap = new Heap([], null, (a, b) => b.end - a.end)
+
+    let cpuLoad = 0;
+    for (let i = 0; i < jobs.length; i++) {
+        let job = jobs[i]
+        heap.push(job);
+        cpuLoad = cpuLoad + job.cpu_load
+
+        while (heap.length>0 && heap.peek().end < job.start) {
+
+            let endingJob = heap.pop();
+            cpuLoad = cpuLoad - endingJob.cpu_load
+
+        }
+        maxCpuLoad = Math.max(maxCpuLoad, cpuLoad)
+    }
+
+    return maxCpuLoad;
 };
 
 
